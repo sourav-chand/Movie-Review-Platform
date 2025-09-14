@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: movie-review-backend
+    env: node
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    rootDir: backend
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false # This will be set manually in Render UI for security
+      - key: JWT_SECRET
+        sync: false # This will be set manually in Render UI for security
+      - key: PORT
+        value: 10000 # Render provides a dynamic port, but we can set a default
+
+  - type: web
+    name: movie-review-frontend
+    env: static
+    buildCommand: "npm install && npm run build"
+    rootDir: frontend
+    publishPath: frontend/dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: /api # This will be handled by Render's proxy
